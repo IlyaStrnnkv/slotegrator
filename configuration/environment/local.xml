@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-    <entry key="baseUrl"></entry>
-    <entry key="timeout">60000</entry>
-    <entry key="pageLoadTimeout">60000</entry>
+    <entry key="baseUrl">http://test-app.d6.dev.devcaz.com/admin/login</entry>
+    <entry key="timeout">15</entry>
+    <entry key="pageLoadTimeout">15</entry>
 </properties>
