@@ -72,4 +72,33 @@ public class PlayersPage extends BasePage {
         Assert.assertEquals(nativeSort, uiSort);
         return this;
     }
+
+    @Step("Нажать на хедер 'Status'")
+    public final PlayersPage clickToStatusHeader() {
+        waitAndClick(statusHeader);
+        return this;
+    }
+
+//    @Step("Проверить сортировку столбца 'Status'")
+//    public final PlayersPage checkSortByStatusColumn() {
+//        Comparator comparator = new Comparator() {
+//            @Override
+//            public int compare(Object status1, Object status2) {
+//                if (status1.toString().equals("Not active") || status2.toString().equals("Not active")) {
+//                    return -1;
+//                }
+//                return 0;
+//            }
+//        };
+//        List<String> nativeSort = (List<String>) statusList.stream()
+//            .map(WebElement::getText)
+//            .sorted(comparator)
+//            .collect(Collectors.toList());
+//        List<String> uiSort = statusList
+//            .stream()
+//            .map(WebElement::getText)
+//            .collect(Collectors.toList());
+//        Assert.assertEquals(uiSort, nativeSort);
+//        return this;
+//    }
 }

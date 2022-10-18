@@ -27,6 +27,16 @@ public class DriverFactory {
         return driver;
     }
 
+    public static WebDriver createDriverForCucumber(String browserName) {
+        int pageLoadTimeout = parseInt(PAGE_LOAD_TIMEOUT);
+        int timeout = parseInt(TIMEOUT);
+        WebDriver driver = getDriver(browserName);
+        driver.manage().window().maximize();
+        driver.manage().timeouts().pageLoadTimeout(pageLoadTimeout, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
+        return driver;
+    }
+
     /**
      * Get driver
      * @param browserName browser name
