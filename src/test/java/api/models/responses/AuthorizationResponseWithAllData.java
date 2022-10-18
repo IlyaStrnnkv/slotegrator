@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class AuthorizationResponseWithAllData {
+
     private PlayerProfileDataResponse playerProfileDataResponse;
     private AuthorizationResponse authorizationResponse;
 

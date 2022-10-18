@@ -5,8 +5,7 @@
       When Open player list
       Then Check that player list is open
 
-    Scenario:
+    Scenario: Check sort by status column
       Given Login as admin
-      And Open list of Players
-      When sortByStatusColumn
-      Then checkSortByStatusColumn
+      When Open player list
+      Then Check sort by status column

@@ -12,6 +12,9 @@ import static ui.helpers.DriverFactory.createDriver;
 import static ui.helpers.ParametersProvider.getPropertiesXml;
 import static ui.data.DefaultTestSetupData.BASE_URL;
 
+/**
+ * Base test class
+ */
 @Listeners(ui.listeners.Listener.class)
 public class BaseTest {
 

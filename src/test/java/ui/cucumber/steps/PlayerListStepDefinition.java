@@ -1,5 +1,6 @@
 package ui.cucumber.steps;
 
+import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -10,6 +11,8 @@ import ui.pages.LoginPage;
 import ui.pages.PlayersPage;
 import ui.pages.components.LeftMenuComponent;
 
+import static ui.data.AuthorizationData.CORRECT_ADMIN_LOGIN;
+import static ui.data.AuthorizationData.CORRECT_ADMIN_PASSWORD;
 import static ui.data.DefaultTestSetupData.BASE_URL;
 import static ui.helpers.DriverFactory.createDriverForCucumber;
 
@@ -29,7 +32,7 @@ public class PlayerListStepDefinition {
     @Given("Login as admin")
     public final void loginAsAdmin() {
         new LoginPage(driver)
-            .login("admin1", "[9k<k8^z!+$$GkuP");
+            .login(CORRECT_ADMIN_LOGIN, CORRECT_ADMIN_PASSWORD);
     }
 
     @When("Open player list")
@@ -52,15 +55,17 @@ public class PlayerListStepDefinition {
             .checkPlayersPageIsOpen();
     }
 
-    @When("Sort by status column")
-    public final void sortByStatusColumn() {
-        new PlayersPage(driver)
-            .clickToStatusHeader();
-    }
-
     @Then("Check sort by status column")
     public final void checkSortByStatusColumn() {
         new PlayersPage(driver)
             .checkSortStatusColumn();
+    }
+
+    /**
+     * Suite teardown.
+     */
+    @After
+    public final void tearDown() {
+        driver.quit();
     }
 }

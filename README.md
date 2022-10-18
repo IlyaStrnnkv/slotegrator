@@ -1,9 +1,6 @@
-
 Конфигурация проекта в Intellij IDEA:
 
-SDK - 1.8
-
-Language level - 8
+Language level - 11
 
 
 Варианты запуска:

@@ -6,6 +6,9 @@ import java.util.Properties;
 
 import static java.lang.System.getProperty;
 
+/**
+ * Parameters provider class
+ */
 public final class ParametersProvider {
 
     public static Properties getPropertiesXml() {

@@ -13,6 +13,10 @@ import org.testng.Assert;
 import java.util.HashMap;
 import java.util.Map;
 
+import static api.data.AuthorizationData.BASIC_AUTH_LOGIN;
+import static api.data.AuthorizationData.REGISTRATION_NEW_PLAYER_PASSWORD;
+import static api.data.EndPointsData.PLAYERS;
+import static api.data.EndPointsData.TOKEN;
 import static api.helpers.DataGenerator.generateEnglishLetters;
 import static api.helpers.Specifications.requestWithBasicAuth;
 import static io.restassured.RestAssured.given;
@@ -28,10 +32,10 @@ public class Requests {
         Map<String, String> payload = new HashMap<>();
         payload.put("grant_type", "client_credentials");
         payload.put("scope", "guest:default");
-        String token = requestWithBasicAuth("front_2d6b0a8391742f5d789d7d915755e09e", "")
+        String token = requestWithBasicAuth(BASIC_AUTH_LOGIN, "")
             .body(payload)
             .when()
-            .post("/v2/oauth2/token")
+            .post(TOKEN)
             .then()
             .body("token_type", equalTo("Bearer"))
             .extract().body().jsonPath().getString("access_token");
@@ -43,15 +47,15 @@ public class Requests {
     public static final PlayerProfileDataResponse getRegistrationNewPlayerResponse() {
         String token = getGuestToken();
         PayloadForRegistrationNewPlayer payload = new PayloadForRegistrationNewPlayer(
-            generateEnglishLetters(10), "amFuZWRvZTEyMw==",
-            "amFuZWRvZTEyMw===", generateEnglishLetters(10) + "@gmail.com");
+            generateEnglishLetters(10), REGISTRATION_NEW_PLAYER_PASSWORD,
+            REGISTRATION_NEW_PLAYER_PASSWORD + "=", generateEnglishLetters(10) + "@gmail.com");
 
         Specifications.installSpecification(Specifications.requestSpec(URL), Specifications.responseSpec(201));
         String response =  given()
             .header("Authorization", "Bearer " + token)
             .body(payload)
             .when()
-            .post("/v2/players")
+            .post(PLAYERS)
             .then()
             .extract().asPrettyString();
         return new Gson().fromJson(response, PlayerProfileDataResponse.class);
@@ -61,13 +65,13 @@ public class Requests {
     public static final AuthorizationResponseWithAllData getSuccessfulAuthorizationResponseWithAllData() {
         PlayerProfileDataResponse registrationResponse = getRegistrationNewPlayerResponse();
         PayloadForAuthorization payload = new PayloadForAuthorization(
-            "password", registrationResponse.getUsername(), "amFuZWRvZTEyMw==");
+            "password", registrationResponse.getUsername(), REGISTRATION_NEW_PLAYER_PASSWORD);
 
         Specifications.installSpecification(Specifications.requestSpec(URL), Specifications.responseSpec(200));
-        String authorizationResponseString = requestWithBasicAuth("front_2d6b0a8391742f5d789d7d915755e09e", "")
+        String authorizationResponseString = requestWithBasicAuth(BASIC_AUTH_LOGIN, "")
             .body(payload)
             .when()
-            .post("/v2/oauth2/token")
+            .post(TOKEN)
             .then()
             .extract().asPrettyString();
         return new AuthorizationResponseWithAllData(registrationResponse,

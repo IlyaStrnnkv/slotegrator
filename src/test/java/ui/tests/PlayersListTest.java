@@ -5,6 +5,9 @@ import org.testng.annotations.Test;
 import ui.base.BaseTest;
 import ui.pages.LoginPage;
 
+import static ui.data.AuthorizationData.CORRECT_ADMIN_LOGIN;
+import static ui.data.AuthorizationData.CORRECT_ADMIN_PASSWORD;
+
 @Epic("Casino")
 @Feature("Список игроков")
 public class PlayersListTest extends BaseTest {
@@ -14,7 +17,7 @@ public class PlayersListTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public final void checkOpenPlayersList() {
         new LoginPage(driver)
-            .login("admin1", "[9k<k8^z!+$$GkuP")
+            .login(CORRECT_ADMIN_LOGIN, CORRECT_ADMIN_PASSWORD)
             .checkAuthorizationSuccessful()
             .clickToUsersSection()
             .clickToPlayersSubsection()
@@ -26,7 +29,7 @@ public class PlayersListTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     public final void checkSort() {
         new LoginPage(driver)
-            .login("admin1", "[9k<k8^z!+$$GkuP")
+            .login(CORRECT_ADMIN_LOGIN, CORRECT_ADMIN_PASSWORD)
             .checkAuthorizationSuccessful()
             .clickToUsersSection()
             .clickToPlayersSubsection()

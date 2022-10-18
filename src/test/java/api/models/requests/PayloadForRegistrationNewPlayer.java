@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class PayloadForRegistrationNewPlayer {
+
     private String username;
     private String password_change;
     private String password_repeat;

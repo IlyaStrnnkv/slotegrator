@@ -47,6 +47,4 @@ public class LeftMenuComponent extends BasePage {
         waitAndClick(playersSubsection);
         return new PlayersPage(driver);
     }
-
-
 }

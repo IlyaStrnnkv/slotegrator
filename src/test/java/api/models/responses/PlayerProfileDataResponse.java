@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class PlayerProfileDataResponse {
+
     private Integer id;
     private Integer country_id;
     private Integer timezone_id;

@@ -8,6 +8,8 @@ import org.openqa.selenium.WebDriver;
 import ui.pages.LoginPage;
 import ui.pages.components.LeftMenuComponent;
 
+import static ui.data.AuthorizationData.CORRECT_ADMIN_LOGIN;
+import static ui.data.AuthorizationData.CORRECT_ADMIN_PASSWORD;
 import static ui.data.DefaultTestSetupData.BASE_URL;
 import static ui.helpers.DriverFactory.createDriverForCucumber;
 
@@ -18,17 +20,17 @@ public class LoginStepDefinition {
      */
     private WebDriver driver;
 
-//    @Before
-//    public final void setUp() {
-//        driver = createDriverForCucumber("chrome");
-//        driver.get(BASE_URL);
-//    }
+    @Before
+    public final void setUp() {
+        driver = createDriverForCucumber("chrome");
+        driver.get(BASE_URL);
+    }
 
     @When("Login as admin with correct data")
-    public final void loginAsAdminWithCorrectData() {
+    public void loginAsAdminWithCorrectData() {
         new LoginPage(driver)
-            .inputLogin("admin1")
-            .inputPassword("[9k<k8^z!+$$GkuP")
+            .inputLogin(CORRECT_ADMIN_LOGIN)
+            .inputPassword(CORRECT_ADMIN_PASSWORD)
             .clickToSignInButton();
     }
 

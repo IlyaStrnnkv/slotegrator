@@ -14,6 +14,10 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.Map;
 
+import static api.data.AuthorizationData.BASIC_AUTH_LOGIN;
+import static api.data.AuthorizationData.REGISTRATION_NEW_PLAYER_PASSWORD;
+import static api.data.EndPointsData.PLAYERS;
+import static api.data.EndPointsData.TOKEN;
 import static api.helpers.DataGenerator.generateEnglishLetters;
 import static api.helpers.Payload.getPayloadForGuestToken;
 import static api.helpers.Specifications.requestWithBasicAuth;
@@ -33,10 +37,10 @@ public class ApiTest {
     public final void checkGettingGuestToken() {
         Map<String, String> payload = getPayloadForGuestToken();
         Specifications.installSpecification(Specifications.requestSpec(URL), Specifications.responseSpec(200));
-        String token = requestWithBasicAuth("front_2d6b0a8391742f5d789d7d915755e09e", "")
+        String token = requestWithBasicAuth(BASIC_AUTH_LOGIN, "")
             .body(payload)
             .when()
-            .post("/v2/oauth2/token")
+            .post(TOKEN)
             .then()
             .body("token_type", equalTo("Bearer"))
             .extract().body().jsonPath().getString("access_token");
@@ -50,15 +54,15 @@ public class ApiTest {
     public final void checkRegistrationNewPlayer() {
         String token = getGuestToken();
         PayloadForRegistrationNewPlayer payload = new PayloadForRegistrationNewPlayer(
-            generateEnglishLetters(10), "amFuZWRvZTEyMw==",
-            "amFuZWRvZTEyMw===", generateEnglishLetters(10) + "@gmail.com");
+            generateEnglishLetters(10), REGISTRATION_NEW_PLAYER_PASSWORD,
+            REGISTRATION_NEW_PLAYER_PASSWORD + "=", generateEnglishLetters(10) + "@gmail.com");
 
         Specifications.installSpecification(Specifications.requestSpec(URL), Specifications.responseSpec(201));
         Response response = given()
             .header("Authorization", "Bearer " + token)
             .body(payload)
             .when()
-            .post("/v2/players")
+            .post(PLAYERS)
             .then()
             .extract().response();
         JsonPath jsonPath = response.jsonPath();
@@ -74,13 +78,13 @@ public class ApiTest {
     public final void checkSuccessAuthorization() {
         PlayerProfileDataResponse response = getRegistrationNewPlayerResponse();
         PayloadForAuthorization payload = new PayloadForAuthorization(
-            "password", response.getUsername(), "amFuZWRvZTEyMw==");
+            "password", response.getUsername(), REGISTRATION_NEW_PLAYER_PASSWORD);
 
         Specifications.installSpecification(Specifications.requestSpec(URL), Specifications.responseSpec(200));
-        String authorizationResponseString = requestWithBasicAuth("front_2d6b0a8391742f5d789d7d915755e09e", "")
+        String authorizationResponseString = requestWithBasicAuth(BASIC_AUTH_LOGIN, "")
             .body(payload)
             .when()
-            .post("/v2/oauth2/token")
+            .post(TOKEN)
             .then()
             .extract().asPrettyString();
         AuthorizationResponse authorizationResponse = new Gson()
@@ -101,7 +105,7 @@ public class ApiTest {
         String stringResponse = given()
             .header("Authorization", "Bearer " + authorization.getAuthorizationResponse().getAccess_token())
             .when()
-            .get("/v2/players/" + authorization.getPlayerProfileDataResponse().getId())
+            .get(PLAYERS + "/" + authorization.getPlayerProfileDataResponse().getId())
             .then()
             .extract().asString();
         PlayerProfileDataResponse response = new Gson().fromJson(stringResponse, PlayerProfileDataResponse.class);
@@ -121,7 +125,7 @@ public class ApiTest {
         String message = given()
             .header("Authorization", "Bearer " + authorization.getAuthorizationResponse().getAccess_token())
             .when()
-            .get("/v2/players/" + idForRequest)
+            .get(PLAYERS + "/" + idForRequest)
             .then()
             .extract().response().jsonPath().getString("message");
         Assert.assertEquals(message, "Object not found: " + idForRequest);
